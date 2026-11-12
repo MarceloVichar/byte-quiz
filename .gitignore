@@ -1,0 +1,17 @@
+node_modules/
+dados/
+relatorios/
+chave_professor.txt
+.taste-skill/
+
+# quizzes das disciplinas têm o gabarito: ficam só no computador do professor e no deploy
+quizzes/*
+!quizzes/exemplo-python.json
+public/media/
+# links de deploy e scripts pessoais
+atalho/.vercel/
+.vercel/
+.dockerignore.bak
+
+# lista do filtro de apelidos (fica fora do repositório)
+lib/palavras-bloqueadas.json

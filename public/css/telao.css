@@ -1,0 +1,237 @@
+/* Telão: projetor 16:9, lido do fundo da sala. Tema escuro, cor viva em blocos inteiros. */
+html { font-size: clamp(15px, 1.05vw, 26px); }
+body { background: var(--chao); }
+.tela { min-height: 100vh; position: relative; }
+.grande { min-height: 3.6em; padding: 0 2.4em; font-size: 1.2rem; }
+.palco3d { position: absolute; inset: 0; pointer-events: none; }
+
+/* ---------------------------------------------------------------- chave */
+.chave { display: grid; place-items: center; padding: 2rem; }
+.chave-form { width: min(460px, 100%); display: grid; gap: 1.4rem; }
+.chave-form h1 { font-size: 3rem; }
+
+/* ---------------------------------------------------------------- início: pilha de pastas */
+.inicio { display: flex; flex-direction: column; padding-bottom: 4rem; }
+.inicio-topo { display: flex; justify-content: center; padding: 1.4rem 2rem 0; font-size: 1.15rem; }
+.inicio-capa { text-align: center; padding: 6vh 2rem 7vh; }
+.inicio-capa h1 { font-size: clamp(5rem, 12vw, 13rem); font-weight: 700; letter-spacing: -0.05em; line-height: 0.88; }
+.inicio-capa h1 .c0 { color: var(--rosa); } .inicio-capa h1 .c1 { color: var(--azul); }
+.inicio-capa h1 .c2 { color: var(--sol); } .inicio-capa h1 .c3 { color: var(--menta); }
+.inicio-capa p { font-size: 1.4rem; max-width: 32em; margin: 1.8rem auto 0; line-height: 1.45; color: var(--suave); }
+
+.pastas { width: 88vw; margin: 0 auto; display: flex; flex-direction: column; }
+.pasta { --cor: var(--rosa); position: relative; margin-top: 2.7rem; color: var(--tinta); }
+.pasta .aba {
+  position: absolute; bottom: calc(100% - 1px); left: var(--x, 6%); height: 2.7rem; padding: 0 2.4rem;
+  background: var(--cor); color: var(--tinta); font-weight: 600; font-size: 1rem; white-space: nowrap;
+  border-radius: 14px 14px 0 0; clip-path: polygon(0.8rem 0, calc(100% - 0.8rem) 0, 100% 100%, 0 100%);
+  transition: transform 0.2s var(--ease);
+}
+.pasta .aba:hover { transform: translateY(-0.3rem); }
+.pasta .faixa { background: var(--cor); height: 3.3rem; display: flex; align-items: center; gap: 0.9em;
+  padding: 0 2.4rem; font-weight: 700; font-size: 1.1rem; cursor: pointer; border-radius: 18px 18px 0 0; }
+.pasta .faixa span { font-weight: 500; opacity: 0.75; }
+.pasta.aberta .faixa { display: none; }
+.pasta-corpo { background: var(--cor); padding: 2.8rem 2.6rem 3.2rem; display: grid; grid-template-columns: 5fr 7fr; gap: 3.4rem;
+  border-radius: 22px; }
+.pasta:not(.aberta) .pasta-corpo { display: none; }
+.pasta-quiz h2 { font-size: clamp(2.2rem, 3.6vw, 4rem); letter-spacing: -0.035em; line-height: 0.98; font-weight: 700; }
+.pasta-quiz .disc { font-size: 1.05rem; margin-top: 0.9rem; font-weight: 600; }
+.pasta-quiz .desc { font-size: 1.15rem; line-height: 1.5; margin-top: 1.3rem; max-width: 30em; }
+.numeros { display: flex; gap: 2.6rem; margin: 2.4rem 0 2.6rem; }
+.numeros div { display: grid; }
+.numeros b { font-size: 3.8rem; font-weight: 700; letter-spacing: -0.045em; line-height: 1; }
+.numeros span { margin-top: 0.3rem; font-weight: 500; }
+.pasta .botao { background: var(--tinta); color: var(--texto); }
+.pasta .botao:hover { background: var(--papel); color: var(--tinta); }
+
+.opcoes-config { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 2.6rem; align-content: start; }
+.grupo-config { display: grid; align-content: start; }
+.grupo-config h3 { font-size: 1.15rem; font-weight: 700; margin: 0 0 0.5rem; }
+.item-config { display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; padding: 0.5rem 0; }
+.item-config .cfg-rotulo { font-size: 1rem; line-height: 1.3; font-weight: 600; }
+.item-config .cfg-rotulo small { display: block; font-size: 0.86rem; margin-top: 0.15rem; font-weight: 500; opacity: 0.8; }
+.interruptor { flex: none; width: 3.2rem; height: 1.8rem; border-radius: 999px; background: rgba(11, 13, 18, 0.22); position: relative;
+  transition: background-color 0.2s var(--ease); }
+.interruptor::after { content: ''; position: absolute; top: 0.25rem; left: 0.25rem; width: 1.3rem; height: 1.3rem; border-radius: 50%;
+  background: var(--papel); transition: transform 0.25s var(--ease); }
+.interruptor[aria-checked="true"] { background: var(--tinta); }
+.interruptor[aria-checked="true"]::after { transform: translateX(1.4rem); }
+.seletor { display: flex; flex: none; background: rgba(11, 13, 18, 0.14); border-radius: 999px; padding: 0.2rem; }
+.seletor button { padding: 0.4rem 0.8rem; font-size: 0.9rem; font-weight: 600; border-radius: 999px; }
+.seletor button[aria-pressed="true"] { background: var(--tinta); color: var(--texto); }
+.ajustes .interruptor { background: var(--placa-3); }
+.ajustes .interruptor[aria-checked="true"] { background: var(--sol); }
+.ajustes .interruptor[aria-checked="true"]::after { background: var(--tinta); }
+.ajustes .seletor { background: var(--placa-2); }
+.ajustes .seletor button[aria-pressed="true"] { background: var(--sol); color: var(--tinta); }
+
+/* ---------------------------------------------------------------- sala de espera */
+.sala { display: grid; grid-template-rows: 55vh 45vh; min-height: 100vh; }
+.sala-topo { display: grid; grid-template-columns: 7fr 5fr; padding: 3.5vh 3vw 0; }
+.sala-entrada { display: flex; flex-direction: column; justify-content: center; padding-bottom: 3vh; }
+.sala-passo { font-size: 1.6vw; font-weight: 500; color: var(--suave); }
+.sala-url { font-size: 3.2vw; font-weight: 700; letter-spacing: -0.02em; margin: 0.3vw 0 2.4vh; overflow-wrap: anywhere; line-height: 1.05; color: var(--sol); }
+.pin { font-size: 10.5vw; font-weight: 700; letter-spacing: -0.05em; line-height: 0.95; white-space: nowrap; margin-top: 0.4vh; }
+.pin i { font-style: normal; color: var(--rosa); font-weight: 600; }
+.pin span { display: inline-block; }
+.sala-local { font-size: 1rem; color: var(--suave); margin-top: 2vh; }
+.sala-qr { position: relative; display: grid; place-items: center; }
+.qr { position: relative; width: min(31vh, 22vw); aspect-ratio: 1; background: var(--papel); padding: 1.2vh; border-radius: 22px; }
+.qr svg { display: block; width: 100%; height: 100%; }
+
+.sala-base { background: var(--placa); border-radius: 28px 28px 0 0; display: grid; grid-template-columns: auto 1fr; grid-template-rows: 1fr auto;
+  gap: 1.6vh 3vw; padding: 3.5vh 3vw 3vh; }
+.sala-contagem { grid-row: 1 / 3; display: grid; align-content: start; min-width: 12vw; }
+.sala-contagem strong { font-size: 9vw; font-weight: 700; letter-spacing: -0.05em; line-height: 0.9; color: var(--menta); }
+.sala-contagem span { font-size: 1.5vw; margin-top: 0.6vh; color: var(--suave); }
+.sala-jogadores { list-style: none; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 0.55vw 0.6vw; overflow: hidden; }
+.sala-jogadores li { display: inline-flex; align-items: center; gap: 0.5vw; font-size: var(--tam-nome, 1.45vw); font-weight: 600; cursor: pointer;
+  background: var(--placa-2); border-radius: 999px; padding: 0.3em 0.9em 0.3em 0.35em; transition: background-color 0.2s; }
+.sala-jogadores li:hover { background: var(--rosa); color: var(--tinta); }
+.sala-jogadores li.fora { opacity: 0.4; }
+.sala-jogadores li .simbolo-jogador { width: 1.6em !important; height: 1.6em !important; border-radius: 50%; overflow: hidden; }
+.sala-vazia { font-size: 1.6vw; color: var(--suave); align-self: start; }
+.sala-acoes { display: flex; gap: 0.8vw; justify-content: flex-end; align-items: center; }
+.sala-acoes .botao.sol, #btn-comecar:not(:disabled) { background: var(--sol); color: var(--tinta); }
+
+/* ---------------------------------------------------------------- leitura */
+.leitura { display: grid; place-items: center; overflow: hidden; }
+.leitura-texto { position: relative; width: 64vw; text-align: center; }
+.leitura-num { font-size: 1.6vw; color: var(--sol); font-weight: 600; }
+.leitura-texto h1 { font-size: clamp(2.4rem, 4.4vw, 5.4rem); line-height: 1.06; letter-spacing: -0.035em; font-weight: 700; margin-top: 2vh; }
+.leitura-texto h1 code { font-size: 0.86em; }
+.leitura-tempo { position: absolute; left: 0; right: 0; bottom: 0; height: 1.2vh; background: var(--placa); }
+.leitura-tempo i { display: block; height: 100%; background: var(--sol); transform-origin: left; }
+
+/* ---------------------------------------------------------------- pergunta */
+.pergunta { display: grid; grid-template-rows: auto auto 1fr auto auto auto; height: 100vh; overflow: hidden; }
+.perg-topo { display: grid; grid-template-columns: 1fr auto; gap: 3vw; align-items: start; padding: 3.4vh 3vw 2.4vh; }
+.perg-topo h1 { font-size: clamp(1.8rem, 2.75vw, 3.4rem); line-height: 1.12; letter-spacing: -0.025em; font-weight: 700; max-width: 66vw; }
+.perg-relogio { display: grid; justify-items: end; }
+.perg-relogio strong { font-size: 6.4vw; line-height: 0.85; font-weight: 700; letter-spacing: -0.05em; color: var(--sol); }
+.perg-relogio span { font-size: 1.05rem; color: var(--suave); margin-top: 0.4vh; }
+.perg-relogio.urgente strong { color: var(--rosa); }
+.perg-tempo { height: 1vh; background: var(--placa-2); margin: 0 3vw; border-radius: 999px; overflow: hidden; }
+.perg-tempo i { display: block; height: 100%; background: var(--sol); transform-origin: left; }
+.perg-meio { display: grid; grid-template-columns: 1fr; align-items: center; justify-items: center; padding: 2.4vh 3vw; min-height: 0; gap: 3vw; }
+.perg-midia { display: grid; place-items: center; min-height: 0; max-height: 100%; width: 100%; }
+.perg-midia pre.codigo { max-width: 100%; max-height: 44vh; }
+.perg-midia img { max-width: 100%; max-height: 44vh; display: block; border-radius: 18px; }
+.pergunta.sem-codigo .perg-meio { display: none; }
+.pergunta.sem-codigo { grid-template-rows: 1fr auto auto auto auto auto; }
+.pergunta.sem-codigo .perg-topo { align-self: center; padding-top: 0; padding-bottom: 5vh; }
+.pergunta.sem-codigo .perg-topo h1 { font-size: clamp(2.4rem, 4.6vw, 5.8rem); line-height: 1.03; letter-spacing: -0.04em; }
+.pergunta.sem-codigo .perg-tempo { margin-bottom: 3vh; }
+.pergunta.sem-codigo .perg-opcoes .opcao { min-height: 17vh; font-size: clamp(1.6rem, 2.6vw, 3.2rem); }
+.perg-opcoes { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7vw; padding: 0 3vw; }
+.perg-opcoes .opcao { min-height: 12.5vh; padding: 1.4vh 2vw 1.4vh 10.5vw; font-size: clamp(1.4rem, 2.1vw, 2.6rem); }
+.perg-opcoes .opcao .glifo { position: absolute; left: 0.4vw; top: 50%; transform: translateY(-50%); font-size: 8.4vw;
+  opacity: 0.28; letter-spacing: -0.12em; }
+.perg-opcoes .opcao .selo { margin-left: auto; font-size: 0.6em; font-weight: 700; white-space: nowrap; padding-left: 1em; }
+.perg-rodape { display: flex; align-items: center; gap: 2vw; padding: 1.6vh 3vw 2vh; font-size: 1.05rem; color: var(--suave); }
+.perg-rodape #perg-respostas { color: var(--menta); font-weight: 700; }
+.perg-rodape .perg-pin { margin-left: auto; }
+.perg-rodape .perg-pin b { color: var(--texto); }
+
+/* revelação */
+.pergunta.revelacao .perg-relogio, .pergunta.revelacao .perg-tempo { visibility: hidden; }
+.pergunta.revelacao .perg-meio { grid-template-columns: 1fr 1fr; }
+.pergunta.revelacao .perg-meio.sem-midia { grid-template-columns: 1fr; }
+.pergunta.revelacao .perg-midia pre.codigo { font-size: 1.15rem !important; max-height: 30vh; }
+.pergunta.revelacao .perg-midia img { max-height: 30vh; }
+.opcao.apagada { --cor: var(--placa); --cor-tinta: #7d8796; }
+.opcao.apagada .glifo { opacity: 0.4; }
+.perg-grafico { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4vw; width: 100%; height: 30vh; align-items: end; }
+.barra { display: flex; flex-direction: column; align-items: center; height: 100%; gap: 0.6vh; }
+.barra .n { font-size: 2.6vw; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+.barra .trilho { flex: 1; width: 100%; position: relative; }
+.barra .coluna { position: absolute; inset: auto 0 0 0; background: var(--cor); transform-origin: bottom; min-height: 0.6vh; border-radius: 12px 12px 4px 4px; }
+.barra .g { font-family: var(--codigo); font-weight: 700; font-size: 1.6vw; color: var(--cor); }
+.barra.errada .coluna { opacity: 0.32; }
+.barra.errada .n { color: var(--suave); }
+.perg-explicacao { background: var(--placa); border-radius: 18px; margin: 0 3vw 1.6vh; padding: 1.8vh 2vw; font-size: clamp(1.1rem, 1.45vw, 1.8rem); line-height: 1.4; }
+.perg-explicacao b { font-weight: 700; color: var(--menta); }
+
+/* ---------------------------------------------------------------- placar: corrida de barras */
+.placar { display: grid; grid-template-rows: auto 1fr auto; padding: 5vh 5vw 4vh; height: 100vh; }
+.placar-topo { display: flex; align-items: baseline; justify-content: space-between; gap: 2vw; }
+.placar-topo h1 { font-size: 7vw; font-weight: 700; letter-spacing: -0.055em; line-height: 0.88; }
+.placar-topo p { font-size: 1.5vw; color: var(--suave); }
+.placar-lista { list-style: none; display: grid; align-content: center; gap: 1.6vh; position: relative; }
+.linha { display: grid; grid-template-columns: 7vw 1fr; align-items: center; gap: 1.6vw; }
+.linha .pos { font-size: 5.2vw; font-weight: 700; letter-spacing: -0.06em; line-height: 0.85; color: var(--suave); text-align: right; }
+.linha.primeira .pos { color: var(--sol); }
+.linha .corpo { display: grid; gap: 0.9vh; min-width: 0; }
+.linha .quem { display: flex; align-items: center; gap: 1vw; font-size: 2.1vw; font-weight: 700; letter-spacing: -0.015em; min-width: 0; }
+.linha .quem .simbolo-jogador { border-radius: 10px; overflow: hidden; }
+.linha .nome { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.linha .seq { font-size: 0.55em; color: var(--tinta); background: var(--rosa); border-radius: 999px; padding: 0.2em 0.7em; white-space: nowrap; }
+.linha .pista { position: relative; height: 4.4vh; display: flex; align-items: center; }
+.linha .barra-pts { height: 100%; border-radius: 999px; background: var(--cor, var(--azul)); min-width: 4vh; width: 0; }
+.linha .pts { margin-left: 1vw; font-size: 2vw; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+.linha .ganho { margin-left: 0.8vw; font-size: 1.15vw; font-weight: 700; color: var(--menta); white-space: nowrap; }
+.placar-rodape { display: flex; justify-content: flex-end; }
+
+/* ---------------------------------------------------------------- pódio */
+.podio { display: grid; grid-template-rows: auto 1fr auto; height: 100vh; overflow: hidden; }
+.podio-titulo { font-size: 5.6vw; font-weight: 700; letter-spacing: -0.05em; line-height: 0.95; padding: 5vh 6vw 0; }
+.podio-palco { position: relative; min-height: 0; }
+.podio-rotulos { position: absolute; inset: 0; pointer-events: none; }
+.rotulo { position: absolute; display: grid; justify-items: center; gap: 0.6vh;
+  padding-bottom: 1.4vh; text-align: center; opacity: 0; }
+.rotulo .simbolo-jogador { border-radius: 14px; overflow: hidden; }
+.rotulo .nome { font-size: 2.4vw; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+.rotulo .pts { font-size: 1.3vw; color: var(--suave); }
+.rotulo[data-pos="1"] .nome { font-size: 3.3vw; color: var(--sol); }
+.podio-plano { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 1.5vw; padding: 0 12vw; }
+.podio-plano .degrau { flex: 1; display: grid; place-items: center; font-size: 6vw; font-weight: 700; transform-origin: bottom; border-radius: 22px 22px 0 0; }
+.podio-acoes { display: flex; justify-content: flex-end; gap: 1vw; padding: 2vh 6vw 4vh; opacity: 0; }
+
+/* ---------------------------------------------------------------- relatório */
+.relatorio { padding-bottom: 4rem; }
+.rel-topo { display: flex; align-items: center; justify-content: space-between; padding: 1.6rem 4vw; font-size: 1.2rem; }
+.rel-acoes { display: flex; gap: 0.8rem; }
+#relatorio { padding: 2rem 4vw 0; display: grid; gap: 4rem; }
+#relatorio h1 { font-size: clamp(2.4rem, 4.2vw, 4.6rem); letter-spacing: -0.04em; line-height: 1; font-weight: 700; max-width: 22em; }
+#relatorio h2 { font-size: 2rem; letter-spacing: -0.025em; font-weight: 700; margin-bottom: 1.2rem; }
+.resumo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; margin-top: 2.4rem; }
+.resumo div { padding: 1.7rem 1.5rem; border-radius: 22px; color: var(--tinta); }
+.resumo div:nth-child(1) { background: var(--sol); } .resumo div:nth-child(2) { background: var(--azul); }
+.resumo div:nth-child(3) { background: var(--menta); } .resumo div:nth-child(4) { background: var(--rosa); }
+.resumo b { display: block; font-size: 3.8rem; font-weight: 700; letter-spacing: -0.045em; line-height: 1; }
+.resumo span { display: block; margin-top: 0.6rem; font-size: 1.05rem; font-weight: 600; }
+.tabela-rolagem { overflow-x: auto; background: var(--placa); border-radius: 22px; padding: 0.6rem 1.2rem; }
+table { width: 100%; border-collapse: collapse; font-size: 1.05rem; }
+th { text-align: left; font-weight: 600; color: var(--suave); padding: 0.9rem 0.9rem; border-bottom: 1px solid var(--placa-3); }
+td { padding: 0.8rem 0.9rem; border-bottom: 1px solid var(--placa-2); vertical-align: middle; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; }
+td .com-simbolo { display: inline-flex; align-items: center; gap: 0.6rem; }
+td .simbolo-jogador { border-radius: 6px; overflow: hidden; }
+.medidor { display: inline-block; width: 7rem; height: 0.6rem; background: var(--placa-3); vertical-align: middle; margin-right: 0.7rem; border-radius: 999px; overflow: hidden; }
+.medidor i { display: block; height: 100%; border-radius: 999px; }
+tr.dificil td:first-child { color: var(--rosa); font-weight: 700; }
+.rel-nota { margin-top: 1.4rem; color: var(--suave); }
+
+/* ajustes */
+.ajustes { margin: auto; border: 0; padding: 2.4rem; width: min(860px, 92vw); background: var(--placa); color: var(--texto); border-radius: 26px; }
+.ajustes[open] { display: grid; gap: 1.6rem; }
+.ajustes::backdrop { background: rgba(5, 6, 8, 0.78); }
+.ajustes h2 { font-size: 2rem; letter-spacing: -0.03em; }
+.ajustes .cfg-rotulo small { color: var(--suave); opacity: 1; }
+
+/* posições fixas na faixa de baixo da sala, com ou sem jogadores */
+.sala-jogadores, .sala-vazia { grid-column: 2; grid-row: 1; }
+.sala-acoes { grid-column: 2; grid-row: 2; }
+
+/* relatórios das aulas anteriores, no fim da tela inicial */
+.anteriores { width: 88vw; margin: 4rem auto 0; }
+.anteriores h2 { font-size: 2rem; letter-spacing: -0.025em; margin-bottom: 1rem; }
+.anteriores ul { list-style: none; display: grid; gap: 0.5rem; }
+.anteriores a { display: grid; grid-template-columns: 1fr auto auto; gap: 2rem; align-items: center; padding: 1rem 1.4rem;
+  background: var(--placa); border-radius: 16px; color: var(--texto); text-decoration: none; font-weight: 600;
+  transition: background-color 0.2s; }
+.anteriores a:hover { background: var(--placa-2); }
+.anteriores a span:nth-child(2) { color: var(--suave); font-weight: 500; }
+.anteriores a span:last-child { color: var(--sol); }

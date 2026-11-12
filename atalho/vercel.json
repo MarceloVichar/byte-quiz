@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/", "destination": "https://bytequiz-173746620581.southamerica-east1.run.app/", "permanent": false },
+    { "source": "/:caminho*", "destination": "https://bytequiz-173746620581.southamerica-east1.run.app/:caminho*", "permanent": false }
+  ]
+}

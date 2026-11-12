@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ByteQuiz · Telão</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23b0298f'/><text x='16' y='23' font-family='monospace' font-weight='700' font-size='18' fill='white' text-anchor='middle'>{}</text></svg>">
+  <link rel="preload" href="/fontes/general-sans-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/nucleo.css">
+  <link rel="stylesheet" href="/css/telao.css">
+  <script type="importmap">
+    { "imports": { "three": "/vendor/three/build/three.module.min.js", "three/addons/": "/vendor/three/examples/jsm/" } }
+  </script>
+</head>
+<body>
+
+  <!-- chave do professor -->
+  <section class="tela fundo-tinta chave" id="tela-chave" hidden>
+    <form class="chave-form" id="form-chave">
+      <h1 class="marca"><i>{</i>ByteQuiz<i>}</i></h1>
+      <label class="campo"><span>Chave do professor</span>
+        <input id="chave" autocomplete="off" placeholder="aparece no terminal ao iniciar o servidor">
+      </label>
+      <button class="botao sol">Entrar</button>
+    </form>
+  </section>
+
+  <!-- escolher o quiz: uma pilha de pastas -->
+  <section class="tela fundo-tinta inicio" id="tela-inicio" hidden>
+    <header class="inicio-topo"><span class="marca"><i>{</i>ByteQuiz<i>}</i></span></header>
+    <div class="inicio-capa">
+      <h1 data-entra>ByteQuiz</h1>
+      <p data-entra>O telão faz a pergunta e cada celular responde. Escolha o quiz da aula e abra a sala.</p>
+    </div>
+    <div class="pastas" id="pastas"></div>
+    <section class="anteriores" id="anteriores" hidden>
+      <h2>Relatórios das aulas</h2>
+      <ul id="lista-relatorios"></ul>
+    </section>
+  </section>
+
+  <!-- sala de espera -->
+  <section class="tela sala" id="tela-sala" hidden>
+    <div class="sala-topo">
+      <div class="sala-entrada">
+        <p class="sala-passo" data-entra>Entre pelo celular em</p>
+        <p class="sala-url" id="sala-url" data-entra></p>
+        <p class="sala-passo" data-entra>e digite o PIN</p>
+        <p class="pin" id="sala-pin" data-entra aria-label="PIN do jogo"></p>
+        <p class="sala-local" id="sala-local"></p>
+      </div>
+      <div class="sala-qr">
+        <div class="palco3d" id="qr-3d"></div>
+        <div class="qr" id="sala-qr" role="img" aria-label="QR code para entrar"></div>
+      </div>
+    </div>
+    <div class="sala-base fundo-tinta">
+      <div class="sala-contagem"><strong id="sala-total">0</strong><span id="sala-total-rotulo">na sala</span></div>
+      <ul class="sala-jogadores" id="sala-jogadores" aria-live="polite"></ul>
+      <p class="sala-vazia" id="sala-vazia">Os nomes aparecem aqui assim que a turma entrar.</p>
+      <div class="sala-acoes">
+        <button class="botao leve" id="btn-trocar">Trocar quiz</button>
+        <button class="botao leve" data-acao="som">Som ligado</button>
+        <button class="botao leve" data-acao="tela">Tela cheia</button>
+        <button class="botao leve" id="btn-trancar">Trancar sala</button>
+        <button class="botao leve" id="btn-ajustes">Ajustes</button>
+        <button class="botao sol grande" id="btn-comecar" disabled>Começar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- leitura da pergunta -->
+  <section class="tela fundo-tinta leitura" id="tela-leitura" hidden>
+    <div class="palco3d" id="leitura-3d"></div>
+    <div class="leitura-texto">
+      <p class="leitura-num" id="leitura-num"></p>
+      <h1 id="leitura-pergunta"></h1>
+    </div>
+    <div class="leitura-tempo"><i id="leitura-tempo"></i></div>
+  </section>
+
+  <!-- pergunta e revelação -->
+  <section class="tela pergunta" id="tela-pergunta" hidden>
+    <header class="perg-topo">
+      <h1 id="perg-texto"></h1>
+      <div class="perg-relogio" id="perg-relogio"><strong id="perg-seg"></strong><span>segundos</span></div>
+    </header>
+    <div class="perg-tempo"><i id="perg-tempo"></i></div>
+    <div class="perg-meio" id="perg-meio">
+      <div class="perg-grafico" id="perg-grafico" hidden></div>
+      <div class="perg-midia" id="perg-midia"></div>
+    </div>
+    <div class="perg-explicacao" id="perg-explicacao" hidden></div>
+    <div class="perg-opcoes" id="perg-opcoes"></div>
+    <footer class="perg-rodape">
+      <span id="perg-num"></span>
+      <span id="perg-respostas"></span>
+      <span class="perg-pin">PIN <b id="perg-pin"></b></span>
+      <button class="botao leve" data-acao="som">Som ligado</button>
+      <button class="botao leve" id="perg-encerrar">Encerrar jogo</button>
+      <button class="botao" id="perg-avancar">Pular</button>
+    </footer>
+  </section>
+
+  <!-- placar -->
+  <section class="tela fundo-areia placar" id="tela-placar" hidden>
+    <header class="placar-topo">
+      <h1>Placar</h1>
+      <p id="placar-sub"></p>
+    </header>
+    <ol class="placar-lista" id="placar-lista"></ol>
+    <footer class="placar-rodape"><button class="botao grande" id="placar-avancar">Próxima pergunta</button></footer>
+  </section>
+
+  <!-- pódio -->
+  <section class="tela podio" id="tela-podio" hidden>
+    <h1 class="podio-titulo" id="podio-titulo">Quem subiu ao pódio</h1>
+    <div class="podio-palco" id="podio-palco">
+      <div class="palco3d" id="podio-3d"></div>
+      <div class="podio-rotulos" id="podio-rotulos"></div>
+      <div class="podio-plano" id="podio-plano" hidden></div>
+    </div>
+    <footer class="podio-acoes" id="podio-acoes">
+      <button class="botao leve" id="btn-relatorio">Ver relatório da turma</button>
+      <button class="botao" id="btn-nova">Nova partida</button>
+    </footer>
+  </section>
+
+  <!-- relatório -->
+  <section class="tela fundo-areia relatorio" id="tela-relatorio" hidden>
+    <header class="rel-topo">
+      <span class="marca"><i>{</i>ByteQuiz<i>}</i></span>
+      <div class="rel-acoes">
+        <button class="botao leve" id="btn-voltar-podio">Voltar ao pódio</button>
+        <a class="botao" id="btn-csv" download>Baixar planilha</a>
+        <button class="botao magenta" id="btn-nova-2">Nova partida</button>
+      </div>
+    </header>
+    <main id="relatorio"></main>
+  </section>
+
+  <dialog class="ajustes" id="dialogo-ajustes">
+    <h2>Ajustes desta partida</h2>
+    <div id="opcoes-ajustes" class="opcoes-config"></div>
+    <form method="dialog"><button class="botao">Fechar</button></form>
+  </dialog>
+
+  <script src="/vendor/gsap/gsap.min.js"></script>
+  <script src="/vendor/gsap/Flip.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/js/telao.js"></script>
+</body>
+</html>

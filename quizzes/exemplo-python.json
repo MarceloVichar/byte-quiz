@@ -1,0 +1,43 @@
+{
+  "id": "exemplo-python",
+  "ordem": 0,
+  "titulo": "Exemplo: Python básico",
+  "disciplina": "Quiz de exemplo",
+  "descricao": "Quiz curto para testar o ByteQuiz. Os quizzes das disciplinas ficam fora do repositório para não expor o gabarito.",
+  "linguagem": "python",
+  "perguntas": [
+    {
+      "pergunta": "Qual é o resultado de `7 // 2` em Python?",
+      "alternativas": ["3", "3.5", "4", "1"],
+      "correta": 0, "tempo": 20, "tipo": "conceito",
+      "explicacao": "`//` é a divisão inteira: descarta a parte decimal. `7 / 2` daria 3.5."
+    },
+    {
+      "pergunta": "Observe o código. O que aparece na tela?",
+      "codigo": "x = 10\nx += 5\nprint(x)",
+      "alternativas": ["15", "105", "10", "Erro"],
+      "correta": 0, "tempo": 20, "tipo": "pratica",
+      "explicacao": "`x += 5` é o mesmo que `x = x + 5`."
+    },
+    {
+      "pergunta": "Que tipo de valor o `input()` devolve?",
+      "alternativas": ["Sempre texto (str)", "Sempre número (int)", "Depende do que for digitado", "Nada"],
+      "correta": 0, "tempo": 20, "tipo": "conceito",
+      "explicacao": "Mesmo que a pessoa digite 42, `input()` devolve o texto \"42\". Para fazer contas, converta com `int()` ou `float()`."
+    },
+    {
+      "pergunta": "Observe o código. O que aparece na tela?",
+      "codigo": "for i in range(2, 8, 2):\n    print(i, end=\" \")",
+      "alternativas": ["2 4 6", "2 4 6 8", "2 3 4 5 6 7", "0 2 4 6"],
+      "correta": 0, "tempo": 30, "tipo": "pratica",
+      "explicacao": "`range(2, 8, 2)` começa em 2, anda de 2 em 2 e para antes do 8."
+    },
+    {
+      "pergunta": "Observe o código. O que aparece na tela?",
+      "codigo": "palavra = \"python\"\nprint(len(palavra))",
+      "alternativas": ["6", "5", "7", "python"],
+      "correta": 0, "tempo": 20, "tipo": "pratica",
+      "explicacao": "`len()` também conta os caracteres de um texto: p-y-t-h-o-n são 6."
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+/* ByteQuiz · base visual
+   Ideia: os quatro pares de símbolos do código ({ } < > [ ] ( )) são o sistema inteiro:
+   as alternativas, a moldura do PIN, o pódio e o confete. Cor chapada, sem gradiente,
+   sem sombra, sem vidro. Céu e areia são o chão; cor saturada só em objetos. */
+
+@font-face { font-family: 'General Sans'; src: url('/fontes/general-sans-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'General Sans'; src: url('/fontes/general-sans-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'General Sans'; src: url('/fontes/general-sans-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'General Sans'; src: url('/fontes/general-sans-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'JetBrains Mono'; src: url('/fontes/jetbrains-mono.woff2') format('woff2'); font-weight: 400 800; font-display: swap; }
+
+:root {
+  /* chão escuro, superfícies em degraus de tom, quatro cores vivas */
+  --chao: #0b0d12;
+  --placa: #151922;
+  --placa-2: #1f2430;
+  --placa-3: #2a3040;
+  --texto: #f3f5f7;
+  --suave: #a7b1be;
+  --rosa: #ff4fa3;
+  --azul: #3d8bff;
+  --sol: #ffc31f;
+  --menta: #2ee6a6;
+  --tinta: #0b0d12;
+  --papel: #ffffff;
+
+  /* nomes antigos, apontando para o tema escuro */
+  --ceu: var(--chao);
+  --ceu-2: var(--placa-2);
+  --areia: var(--placa);
+  --areia-2: var(--placa-2);
+  --cinza: var(--suave);
+  --magenta: var(--rosa);
+
+  --op-0: var(--rosa);  --op-0-tinta: #0b0d12;
+  --op-1: var(--azul);  --op-1-tinta: #0b0d12;
+  --op-2: var(--sol);   --op-2-tinta: #0b0d12;
+  --op-3: var(--menta); --op-3-tinta: #0b0d12;
+
+  --texto-fonte: 'General Sans', 'Helvetica Neue', Arial, sans-serif;
+  --codigo: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: var(--texto-fonte);
+  font-weight: 500;
+  background: var(--chao);
+  color: var(--texto);
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+  overflow-x: hidden;
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; }
+[hidden] { display: none !important; }
+::selection { background: var(--sol); color: var(--tinta); }
+:focus-visible { outline: 3px solid var(--magenta); outline-offset: 3px; }
+
+/* marca */
+.marca { font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+.marca i { font-style: normal; color: var(--magenta); }
+
+/* botões: retângulo chapado, cantos retos, uma cor */
+.botao {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6em;
+  min-height: 3.2em; padding: 0 1.6em; border-radius: 999px;
+  background: var(--texto); color: var(--tinta);
+  font-weight: 600; letter-spacing: -0.005em; text-decoration: none;
+  transition: background-color 0.18s var(--ease), color 0.18s var(--ease), transform 0.12s var(--ease);
+}
+.botao:hover { background: var(--sol); }
+.botao:active { transform: scale(0.97); }
+.botao:disabled { background: var(--placa-2); color: var(--suave); cursor: not-allowed; transform: none; }
+.botao.sol { background: var(--sol); color: var(--tinta); }
+.botao.sol:hover { background: var(--papel); }
+.botao.magenta { background: var(--rosa); color: var(--tinta); }
+.botao.magenta:hover { background: var(--texto); }
+.botao.leve { background: transparent; color: inherit; padding: 0 1em; }
+.botao.leve { color: var(--texto); }
+.botao.leve:hover { background: var(--placa-2); }
+
+/* alternativa: o símbolo dela, gigante e cortado pela borda, é a identidade do bloco */
+.opcao {
+  --cor: var(--op-0); --cor-tinta: var(--op-0-tinta);
+  position: relative; overflow: hidden; isolation: isolate; border-radius: 18px;
+  display: flex; align-items: center; gap: 0.9em; text-align: left;
+  background: var(--cor); color: var(--cor-tinta);
+  font-weight: 600; line-height: 1.15;
+  transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
+}
+.opcao[data-i="1"] { --cor: var(--op-1); --cor-tinta: var(--op-1-tinta); }
+.opcao[data-i="2"] { --cor: var(--op-2); --cor-tinta: var(--op-2-tinta); }
+.opcao[data-i="3"] { --cor: var(--op-3); --cor-tinta: var(--op-3-tinta); }
+.opcao .glifo {
+  flex: none; font-weight: 700; letter-spacing: -0.06em; line-height: 1;
+  font-family: var(--codigo);
+}
+.opcao .texto { position: relative; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+
+/* código de verdade: o único lugar com fonte monoespaçada */
+pre.codigo {
+  font-family: var(--codigo); font-weight: 500; line-height: 1.5; border-radius: 18px;
+  background: var(--placa); color: #e8eef2;
+  padding: 1em 1.3em 1em 0.6em; overflow: auto; text-align: left; white-space: pre; tab-size: 4;
+}
+pre.codigo .ln { display: block; }
+pre.codigo .ln i { display: inline-block; width: 2.4em; padding-right: 1em; text-align: right; color: #5d7480; font-style: normal; user-select: none; }
+.tk-kw { color: #ff7dbd; }
+.tk-fn { color: #7fb2ff; }
+.tk-str { color: #ffd560; }
+.tk-num { color: #5ff0bd; }
+.tk-op { color: #c9d4e2; }
+.tk-com { color: #7c8796; }
+code { font-family: var(--codigo); font-size: 0.92em; background: var(--placa-2); padding: 0.05em 0.35em; border-radius: 6px; }
+.fundo-sol code, .fundo-menta code, .fundo-rosa code, .fundo-magenta code, .fundo-azul code { background: rgba(11, 13, 18, 0.14); }
+
+/* símbolo do jogador (identicon) */
+.simbolo-jogador { display: inline-block; flex: none; vertical-align: middle; image-rendering: pixelated; }
+.simbolo-jogador svg { display: block; width: 100%; height: 100%; }
+
+/* campos */
+.campo { display: grid; gap: 0.45rem; }
+.campo > span { font-weight: 600; }
+.campo small { color: var(--suave); font-weight: 500; font-size: 0.9em; }
+.campo input {
+  width: 100%; min-height: 3.4rem; padding: 0 1.1rem; background: var(--placa); color: var(--texto);
+  border: 2px solid var(--placa-3); border-radius: 14px; font-weight: 600; font-size: 1.1rem; outline: none;
+}
+.campo input:focus { border-color: var(--sol); }
+.campo input::placeholder { color: #6f7a88; }
+
+.aviso {
+  position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 1000;
+  background: var(--texto); color: var(--tinta); padding: 0.95em 1.3em; font-weight: 600; border-radius: 14px;
+  max-width: calc(100vw - 32px); text-align: center;
+}
+.aviso.erro { background: var(--rosa); }
+.faixa-conexao {
+  position: fixed; inset: 0 0 auto 0; z-index: 900; background: var(--sol); color: var(--tinta);
+  font-weight: 600; text-align: center; padding: 0.7em 1em;
+}
+
+canvas.confete { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 800; pointer-events: none; }
+.fundo-tinta { background: #050608; color: var(--texto); }
+.fundo-ceu { background: var(--chao); color: var(--texto); }
+.fundo-areia { background: var(--placa); color: var(--texto); }
+.fundo-sol { background: var(--sol); color: var(--tinta); }
+.fundo-menta { background: var(--menta); color: var(--tinta); }
+.fundo-magenta, .fundo-rosa { background: var(--rosa); color: var(--tinta); }
+.fundo-azul { background: var(--azul); color: var(--tinta); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

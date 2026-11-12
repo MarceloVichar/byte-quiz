@@ -1,0 +1,105 @@
+/* Celular: um polegar, letra grande, uma coisa por tela. */
+html, body { overscroll-behavior: none; }
+body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.vista { min-height: 100dvh; display: flex; flex-direction: column; }
+
+/* PIN */
+.entrada-pin { position: relative; overflow: hidden; padding: max(28px, env(safe-area-inset-top)) 20px 28px; justify-content: flex-end; }
+.pin-marca { position: absolute; inset: 0 0 auto 0; height: 58dvh; display: flex; justify-content: space-between; align-items: center;
+  font-weight: 700; font-size: 70vw; line-height: 1; pointer-events: none; }
+.pin-marca span:first-child { color: var(--rosa); }
+.pin-marca span:last-child { color: var(--azul); }
+.pin-marca span:first-child { margin-left: -14vw; }
+.pin-marca span:last-child { margin-right: -14vw; }
+.formulario { position: relative; display: grid; gap: 18px; width: min(460px, 100%); margin: 0 auto; }
+.formulario h1 { font-size: clamp(2.6rem, 13vw, 4rem); letter-spacing: -0.04em; line-height: 0.95; font-weight: 700; }
+.formulario > p { font-size: 1.1rem; line-height: 1.45; }
+#pin { font-size: 2.4rem; font-weight: 700; letter-spacing: 0.18em; text-align: center; min-height: 4.6rem; }
+.formulario .botao { min-height: 3.6rem; font-size: 1.1rem; width: 100%; }
+
+/* perfil */
+.perfil { padding: max(24px, env(safe-area-inset-top)) 20px 28px; }
+.perfil-quiz { font-weight: 600; color: var(--sol); }
+.apelido-linha { display: flex; gap: 8px; }
+.apelido-linha input { flex: 1; min-width: 0; }
+.apelido-linha .botao { width: auto; flex: none; padding: 0 1.1rem; }
+.simbolos-campo { border: 0; display: grid; gap: 10px; }
+.simbolos-campo legend { font-weight: 600; margin-bottom: 10px; }
+.simbolos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.simbolos button { aspect-ratio: 1; display: grid; place-items: center; background: var(--placa); border-radius: 16px; transition: background-color 0.2s, transform 0.15s; }
+.simbolos button .simbolo-jogador { border-radius: 8px; overflow: hidden; }
+.simbolos button[aria-checked="true"] { background: var(--sol); transform: scale(1.05); }
+.simbolos-campo .botao.leve { justify-self: start; width: auto; min-height: 2.6rem; padding: 0 0.6rem; text-decoration: underline; }
+.botao.entrar { margin-top: 6px; }
+.dica-queda { font-size: 0.95rem; color: var(--suave); line-height: 1.45; }
+
+/* jogo */
+.barra { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: max(12px, env(safe-area-inset-top)) 16px 12px;
+  background: var(--ceu); position: sticky; top: 0; z-index: 5; }
+.eu { display: flex; align-items: center; gap: 10px; min-width: 0; font-size: 1.05rem; }
+.eu b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
+.pontos { white-space: nowrap; color: var(--cinza); }
+.pontos b { color: var(--tinta); font-size: 1.15rem; }
+.tempo { height: 8px; background: var(--ceu-2); }
+.tempo i { display: block; height: 100%; background: var(--tinta); transform-origin: left; }
+.tempo.urgente i { background: var(--magenta); }
+.palco { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.palco > .cena { flex: 1; display: flex; flex-direction: column; padding: 20px 16px max(20px, env(safe-area-inset-bottom)); gap: 14px; }
+
+.cena.centro { justify-content: center; text-align: left; }
+.cena h2 { font-size: clamp(2rem, 9.5vw, 3rem); letter-spacing: -0.035em; line-height: 1; font-weight: 700; }
+.cena p { font-size: 1.1rem; line-height: 1.45; }
+.cena .nota { color: inherit; opacity: 1; font-size: 1rem; }
+.fundo-tinta .nota, .fundo-magenta .nota, .fundo-azul .nota { color: #dce8ef; }
+
+/* espera */
+.espera .grande-simbolo { width: 46vw; max-width: 220px; }
+.espera .grande-simbolo .simbolo-jogador { width: 100% !important; height: auto !important; aspect-ratio: 1; }
+.espera .apelido-grande { font-size: clamp(2rem, 10vw, 3.2rem); font-weight: 700; letter-spacing: -0.035em; line-height: 1; overflow-wrap: anywhere; }
+
+/* leitura */
+.leitura-cel .num { font-weight: 600; color: var(--sol); }
+.leitura-cel h2 { font-size: clamp(1.7rem, 7.6vw, 2.5rem); line-height: 1.12; }
+
+/* pergunta */
+.cabeca { display: flex; justify-content: space-between; align-items: baseline; font-weight: 600; color: var(--suave); }
+.cabeca .seg { color: var(--sol); font-size: 1.4rem; font-weight: 700; }
+.enunciado { font-size: 1.3rem; line-height: 1.3; font-weight: 700; letter-spacing: -0.015em; }
+.palco pre.codigo { font-size: 0.86rem; max-height: 34dvh; }
+.palco img.figura { max-width: 100%; max-height: 32dvh; align-self: flex-start; }
+.alternativas { display: grid; gap: 8px; margin-top: auto; }
+.alternativas .opcao { min-height: 68px; padding: 12px 16px 12px 76px; font-size: 1.15rem; width: 100%; }
+.alternativas .opcao .glifo { position: absolute; left: -6px; top: 50%; transform: translateY(-50%); font-size: 64px; opacity: 0.4; }
+.alternativas .opcao:active { transform: scale(0.98); }
+.alternativas.so-simbolos { grid-template-columns: 1fr 1fr; flex: 1; }
+.alternativas.so-simbolos .opcao { justify-content: center; padding: 0; min-height: 0; }
+.alternativas.so-simbolos .opcao .glifo { position: static; transform: none; opacity: 1; font-size: 22vw; }
+.alternativas.travado .opcao:not(.escolhida) { opacity: 0.2; }
+
+/* resposta enviada: a tela inteira na cor escolhida */
+.enviada { justify-content: center; }
+.enviada .glifo-grande { font-family: var(--codigo); font-weight: 800; font-size: 46vw; line-height: 0.9; letter-spacing: -0.12em; }
+
+/* resultado */
+.resultado h2 { font-size: clamp(3.2rem, 17vw, 5.4rem); letter-spacing: -0.05em; line-height: 0.9; }
+.resultado .ganho { font-size: clamp(2.4rem, 12vw, 3.6rem); font-weight: 700; letter-spacing: -0.04em; }
+.resultado .serie { font-weight: 700; font-size: 1.15rem; }
+.resultado .certa-era { font-size: 1.15rem; line-height: 1.4; }
+.resultado .lugar { font-size: 1.3rem; line-height: 1.35; margin-top: 8px; }
+.resultado .lugar b { font-weight: 700; }
+
+/* final */
+.final .lugar-grande { font-size: clamp(6rem, 42vw, 12rem); font-weight: 700; letter-spacing: -0.06em; line-height: 0.85; color: var(--sol); }
+.fundo-sol .final .lugar-grande, .jogo.fundo-sol .lugar-grande { color: var(--tinta); }
+.final dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+.final dl div { background: var(--placa-2); padding: 14px 12px; border-radius: 16px; }
+.jogo.fundo-sol .final dl div { background: rgba(11, 13, 18, 0.1); }
+.final dt { font-size: 0.92rem; }
+.final dd { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; }
+
+/* a barra do topo herda o fundo da cena atual */
+.jogo .barra { background: inherit; color: inherit; }
+.jogo .pontos { color: inherit; }
+.jogo .pontos b { color: inherit; }
+.jogo.fundo-tinta .tempo, .jogo.fundo-magenta .tempo, .jogo.fundo-azul .tempo { background: rgba(255, 255, 255, 0.2); }
+.jogo.fundo-tinta .tempo i { background: var(--sol); }

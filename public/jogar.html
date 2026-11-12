@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#cbe4f2">
+  <title>ByteQuiz</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23b0298f'/><text x='16' y='23' font-family='monospace' font-weight='700' font-size='18' fill='white' text-anchor='middle'>{}</text></svg>">
+  <link rel="preload" href="/fontes/general-sans-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/nucleo.css">
+  <link rel="stylesheet" href="/css/celular.css">
+</head>
+<body>
+
+  <!-- PIN -->
+  <section class="vista entrada-pin" id="v-pin" hidden>
+    <div class="pin-marca" data-entra aria-hidden="true"><span>{</span><span>}</span></div>
+    <form id="form-pin" class="formulario">
+      <h1 data-entra>ByteQuiz</h1>
+      <p data-entra>Digite o PIN que está no telão.</p>
+      <label class="campo" data-entra><span>PIN do jogo</span>
+        <input id="pin" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" placeholder="000000">
+      </label>
+      <button class="botao" data-entra>Continuar</button>
+    </form>
+  </section>
+
+  <!-- perfil -->
+  <section class="vista perfil" id="v-perfil" hidden>
+    <form id="form-perfil" class="formulario">
+      <p class="perfil-quiz" id="perfil-quiz" data-entra></p>
+      <h1 data-entra>Quem é você?</h1>
+      <label class="campo" id="campo-nome" data-entra><span>Nome completo <small>só o professor vê</small></span>
+        <input id="nome" autocomplete="name" maxlength="60" placeholder="Nome e sobrenome">
+      </label>
+      <div class="campo" data-entra>
+        <label for="apelido"><span>Apelido no telão</span></label>
+        <div class="apelido-linha">
+          <input id="apelido" maxlength="20" autocomplete="off">
+          <button type="button" class="botao" id="sortear">Sortear</button>
+        </div>
+      </div>
+      <fieldset class="simbolos-campo" data-entra>
+        <legend>Seu símbolo</legend>
+        <div class="simbolos" id="simbolos" role="radiogroup" aria-label="Seu símbolo"></div>
+        <button type="button" class="botao leve" id="outros-simbolos">Ver outros</button>
+      </fieldset>
+      <button class="botao magenta entrar" id="btn-entrar" data-entra>Entrar na sala</button>
+      <p class="dica-queda" data-entra>Se a conexão cair, abra o link de novo e entre com o mesmo nome: seus pontos voltam.</p>
+    </form>
+  </section>
+
+  <!-- jogo -->
+  <section class="vista jogo" id="v-jogo" hidden>
+    <header class="barra">
+      <span class="eu"><span id="eu-simbolo"></span><b id="eu-apelido"></b></span>
+      <span class="pontos"><b id="eu-pontos">0</b> pontos</span>
+    </header>
+    <div class="tempo" id="tempo" hidden><i></i></div>
+    <main id="palco" class="palco"></main>
+  </section>
+
+  <script src="/vendor/gsap/gsap.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/js/celular.js"></script>
+</body>
+</html>
