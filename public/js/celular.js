@@ -172,7 +172,7 @@ function telaLeitura(e) {
 
 function telaPergunta(e) {
   const p = e.pergunta;
-  if (p.respondeu !== null && p.respondeu !== undefined) return telaEnviada(e, p.respondeu);
+  if (p.respondeu !== null && p.respondeu !== undefined) return telaEnviada();
   barraTempo(p.fimPergunta, p.tempo * 1000);
   const comTexto = !!p.alternativas;
   const linguagem = p.codigo && /\b(select|from|where)\b/i.test(p.codigo) ? 'sql' : 'python';
@@ -201,25 +201,21 @@ function telaPergunta(e) {
     if (!b || grupo.classList.contains('travado')) return;
     const escolha = Number(b.dataset.i);
     grupo.classList.add('travado');
-    b.classList.add('escolhida');
-    vibrar(25);
+        vibrar(25);
     socket.emit('jog:responder', { escolha }, (r) => {
       if (!r || !r.ok) aviso('A resposta não chegou a tempo.', 'erro');
     });
-    const ir = () => telaEnviada(e, escolha);
-    if (gsap && !reduzido) gsap.to(b, { scale: 1.04, duration: 0.18, yoyo: true, repeat: 1, onComplete: ir });
-    else ir();
+    telaEnviada();
   };
 }
 
-function telaEnviada(e, escolha) {
-  const op = OPCOES[escolha];
-  const fundo = ['fundo-magenta', 'fundo-azul', 'fundo-sol', 'fundo-tinta'][escolha];
-  const c = cena(fundo, `
-    <span class="glifo-grande" aria-hidden="true">${op.glifo}</span>
+function telaEnviada() {
+  // Tela neutra, igual para todos: o vizinho não consegue ver qual alternativa foi escolhida.
+  const c = cena('fundo-ceu', `
+    <span class="carregando-enviada" aria-hidden="true"><i></i><i></i><i></i></span>
     <h2>Resposta enviada.</h2>
-    <p class="nota">Agora é com o telão. O resultado aparece aqui.</p>`, 'centro enviada');
-  if (gsap && !reduzido) gsap.from($('.glifo-grande', c), { scale: 0.4, rotate: -12, duration: 0.7, ease: 'back.out(1.8)' });
+    <p class="nota">Aguarde o tempo acabar. O resultado aparece aqui.</p>`, 'centro enviada');
+  if (gsap && !reduzido) gsap.from($('h2', c), { y: 20, opacity: 0, duration: 0.4, ease: 'power3.out' });
 }
 
 function telaResultado(e) {

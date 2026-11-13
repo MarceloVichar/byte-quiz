@@ -74,7 +74,7 @@ body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 .alternativas.so-simbolos { grid-template-columns: 1fr 1fr; flex: 1; }
 .alternativas.so-simbolos .opcao { justify-content: center; padding: 0; min-height: 0; }
 .alternativas.so-simbolos .opcao .glifo { position: static; transform: none; opacity: 1; font-size: 22vw; }
-.alternativas.travado .opcao:not(.escolhida) { opacity: 0.2; }
+.alternativas.travado .opcao { opacity: 0.2; }
 
 /* resposta enviada: a tela inteira na cor escolhida */
 .enviada { justify-content: center; }
@@ -103,3 +103,9 @@ body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 .jogo .pontos b { color: inherit; }
 .jogo.fundo-tinta .tempo, .jogo.fundo-magenta .tempo, .jogo.fundo-azul .tempo { background: rgba(255, 255, 255, 0.2); }
 .jogo.fundo-tinta .tempo i { background: var(--sol); }
+
+.carregando-enviada { display: inline-flex; gap: 10px; }
+.carregando-enviada i { width: 14px; height: 14px; border-radius: 50%; background: var(--sol); animation: pulo-env 1s infinite; }
+.carregando-enviada i:nth-child(2) { animation-delay: 0.15s; background: var(--azul); }
+.carregando-enviada i:nth-child(3) { animation-delay: 0.3s; background: var(--menta); }
+@keyframes pulo-env { 0%, 80%, 100% { transform: scale(0.5); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
